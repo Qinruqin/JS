@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>插入+查询</title>
+    <style>
+    #box span{ border:1px solid #f00;display: inline-block; padding:6px; margin: 5px; color: #f00;}
+    </style>
+</head>
+<body>
+    <textarea name="" id="data" cols="40" rows="5"></textarea>
+    <br/>
+    <button id="left-in">左侧入</button>
+    <button id="right-in">右侧入</button>
+    <button id="left-out">左侧出</button>
+    <button id="right-out">右侧出</button>
+    <br/><br/>
+    <input type="text" id="search">
+    <button id="sear-btn">搜索</button>
+    <div id="box">
+    </div>
+    <script>
+    // window.onload = function(){
+
+    // }
+    document.getElementById("left-in").onclick = function(){
+        add("left");
+    };
+    document.getElementById("right-in").onclick = function(){
+        add("right");
+    };
+    document.getElementById("left-out").onclick = function(){
+        del("left");
+    };
+    document.getElementById("right-out").onclick = function(){
+        del("right");
+    };
+    document.getElementById("sear-btn").onclick = function(){
+        search();
+    };
+    var box = document.getElementById("box");
+    
+     // var last = box.lastChild;
+    function add(drs){
+       var val =  document.getElementById("data").value;
+       if(val==""){
+        alert("请输入内容！");
+       }else{
+           var sp = document.createElement("span");
+           sp.innerHTML = val;
+           var first = box.firstChild;
+           if(drs=="left"){
+              box.insertBefore(sp,first);
+           }else if(drs == "right"){
+              box.appendChild(sp);
+           }
+
+       }
+       document.getElementById("data").value ="";
+    }
+    function del(drs){
+       var val =  document.getElementById("data").value;
+       var first = box.firstChild;
+       var last = box.lastChild;
+          
+       if(drs=="left"){
+          box.removeChild(first);
+       }else if(drs == "right"){
+          box.removeChild(last);
+       }
+    }
+
+    function search(){
+        var txt = document.getElementById("search").value;
+        if(txt == ""){
+            alert("请输入查询数据！");
+            return ;
+        }
+        var node = document.getElementById("box").childNodes;
+        var len = node.length;
+        for(var i= 0;i<len;i++){
+            var nd0 = node[i];
+            var str = nd0.innerHTML+"";
+            if(str.indexOf(txt)>-1){
+                nd0.style.background = "#f00";
+                nd0.style.color = "#fff";
+            }else{
+                alert("未搜索到相关内容！");
+                nd0.style.background = "#fff";
+                nd0.style.color = "#f00";
+                return;
+            }
+        }
+
+
+    }
+    </script>
+</body>
+</html>

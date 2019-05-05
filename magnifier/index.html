@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>放大镜效果</title>
+	<style>
+	*{padding: 0;margin:0;}
+	#small{ width: 300px; height: 300px;}
+	#small>img{width: 300px; height: 300px;}
+	#slider{z-index: 4; position: absolute; top: 0; width: 120px; height: 120px; background-color: #000;/*opacity: .4;*/display: none;}
+	#big{position: absolute; top: 0; left: 350px; width:300px; height:300px;overflow: hidden; display: none;}
+	</style>
+	<script src="../js/jquery-1.4.2.min.js"></script>
+	
+</head>
+<body>
+	<div id="small">
+		<img src="images/shirt.png" alt="">
+	</div>
+	<div id="slider"></div>
+	<div id="big">
+		<img src="images/shirt.png" alt="">
+	</div>
+	<script>
+	/*一、jquery写法（有bug会闪烁）*/
+	$(function(){
+		//1、鼠标进入小图，显示滑块和相应的大图效果
+		$("#small").mouseenter(function(){ 
+			$("#slider").css("display","block");
+			$("#big").css("display","block");
+		});
+		//2、鼠标离开小图，隐藏滑块和相应的大图效果
+		$("#small").mouseleave(function(){
+			$("#slider").css("display","none");
+		});
+		//3、鼠标在小图上运动时，显示相应的滑块位置和相应大图位置
+		$("#small").mousemove(function(e){
+
+			var l =  $("#small").offset().left;
+			var t =  $("#small").offset().top;
+
+		    //3.1、滑块的left：鼠标的坐标点-小图div的offsetLeft-滑块宽度的一半；top同理
+			var x = e.clientX - $("#slider").width()/2;
+			var y = e.clientY - $("#slider").height()/2;
+			//3.2、滑块最大宽度
+			var maxX =l+ $("#small").width() - $("#slider").width();
+			var maxY =t+ $("#small").height() - $("#slider").height();
+		
+
+			if(x<l){
+				x = l;
+				
+			}else if(x>maxX){
+				x = maxX;
+			}
+			if(y<t){
+				y = t;
+				
+			}else if(y > maxY){
+				y = maxY;
+			}
+
+			$("#slider").css({
+				display:"block",
+				left:x+'px',
+				top: y +'px'
+			});
+			$("#big").scrollLeft( x/maxX * ($('#big>img').width()-$('#big').width()) );
+
+			$("#big").scrollTop( y/maxY * ($('#big>img').height()-$('#big').height()) );
+		
+
+		})
+
+	});
+
+    /* 二、原生JS写法 */
+   /* var oSmall = document.getElementById("small");
+    var oSlider = document.getElementById("slider");
+    var oBig = document.getElementById("big");
+    var oBigImg = document.getElementsByTagName("img")[1];
+
+   
+    oSmall.onmousemove= function(even){
+    	var e = even || event;
+    	var l = oSmall.offsetLeft;
+    	var t = oSmall.offsetTop;
+    	var x = e.clientX - l - oSlider.offsetWidth/2;
+    	var y = e.clientY - t - oSlider.offsetHeight/2; 
+
+    	var maxX = l+oSmall.clientWidth - oSlider.clientWidth;
+    	var maxY = t+oSmall.clientHeight - oSlider.clientHeight;
+
+    	if(x<l){
+    		x = l;
+    	}else if(x>maxX){
+    		x= maxX;
+    	}
+    	if(y<t){
+    		y = t;
+    	}else if(y>maxY){
+    		y= maxY;
+    	}
+    	oSlider.style.left = x+'px';
+    	oSlider.style.top = y+'px';
+    	oBig.scrollLeft = x/maxX * (oBigImg.clientWidth- oBig.clientWidth);
+    	oBig.scrollTop = y/maxY * (oBigImg.clientHeight- oBig.clientHeight);
+
+    }
+    oSmall.onmouseenter = function(){
+
+    	oSlider.style.display = "block";
+    	oBig.style.display = "block";
+    }
+    oSmall.onmouseleave= function(){
+    	oSlider.style.display = "none";
+    	// oBig.style.display = "none";
+    }*/
+	</script>
+</body>
+</html>

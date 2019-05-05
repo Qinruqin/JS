@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../js/jquery-1.4.2.min.js"></script>
+	<style>
+	*{margin:0; padding: 0; }
+  body{background-color: #F3F2ED;}
+	#div1{position:absolute;z-index:2;width:100px; height: 100px; background-color: #f00; }
+	#box{position:absolute; left: 50%; top:300px; width:220px; height: 250px;margin-left: -100px; color:#666; }
+  #box img{width: 220px; height: 250px;}
+	</style>
+	<script>
+	$(function(){
+  //移动窗口的步骤
+  //1、按下鼠标左键
+  //2、移动鼠标
+   var boxX = $("#box").offset().left ; 
+   var boxY = $("#box").offset().top;
+   var boxR = boxX + $('#box').outerWidth(true);
+   var boxB = boxY +$('#box').outerHeight(true);
+   var x,y;
+   // $("#box").text("这是回收站");
+
+  $('#div1').mousedown(function(e){
+    // e.pageX
+    var positionDiv = $(this).offset();
+    var distenceX = e.pageX - positionDiv.left;
+    var distenceY = e.pageY - positionDiv.top;
+    // alert(boxX+"      "+boxY)
+    // alert(positionDiv.left);
+
+    $(document).mousemove(function(e){
+      x = e.pageX - distenceX;
+      y = e.pageY - distenceY;
+      if(x<0){
+        x=0;
+      }else if(x>$(document).width()-$('#div1').outerWidth(true)){
+        x = $(document).width()-$('#div1').outerWidth(true);
+      }
+
+      if(y<0){
+        y=0;
+      }else if(y>$(document).height()-$('#div1').outerHeight(true)){
+        y = $(document).height()-$('#div1').outerHeight(true);
+      }
+
+      
+      $('#div1').css({
+        'left':x+'px',
+        'top':y+'px'
+      });
+    });
+    $(document).mouseup(function(){
+      $(document).unbind('mousemove');
+      // alert(x+"    "+y)
+      // alert(x+"    Y:"+y+ "  boxX: "+boxX+"   boxY: "+boxY+"   boxR:"+boxR+"   boxB :"+boxB)
+      if(x >= boxX && x<= boxR && y >= boxY && y<= boxB){
+      	// $("#box").text("div1已被删除");
+      	$("#div1").remove();
+        $("#box").remove("img");
+        $("#box").html("<img src='bin2.png'>");
+
+      }
+    });
+  });
+});
+	</script>
+</head>
+<body>
+	<div id="div1"></div>
+	<div id="box">
+		<img src="bin1.png" alt="">
+	</div>
+</body>
+</html>

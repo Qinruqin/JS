@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>手风琴</title>
+<style>
+*{ padding:0; margin:0;}
+.wrapper{ width:1000px; height:300px; border:1px solid #ccc; margin-top:20px; margin-left:30px;}
+.wrapper li{ list-style-type:none;width:200px; height:300px; overflow:hidden; float:left;}
+.wrapper li a{ display:block; position:relative; height:300px; width:150px;}
+.wrapper li a img{width:220px; height:300px; position:absolute;}
+.wrapper li.big,.wrapper li.big a{ width:300px;}
+.wrapper li.big a img{ height:300px; width:300px;}
+</style>
+</head>
+
+<body>
+<div  id="se" class="wrapper">
+  <ul>
+    <li><a href="#"><img src="images/1.jpg"></a></li>
+    <li><a href="#"><img src="images/2.jpg"></a></li>
+    <li><a href="#"><img src="images/3.jpg"></a></li>
+    <li><a href="#"><img src="images/4.jpg"></a></li>
+  </ul>
+</div>
+<script>
+function bind(e1,type,callback){
+  if(typeof e1.addEventListener === 'function'){
+       e1.addEventListener(type,callback,false);
+  }else if(typeof e1.attachEvent === 'function'){
+       e1.attachEvent('on'+type,callback);
+  }
+}
+
+function mouseoverHaddler(e){
+	var target=e.target||e.srcElement;
+	var oDiv=document.getElementById('se');
+   var List=oDiv.getElementsByTagName('li');
+   
+   for(var i = 0; i < List.length; i++){
+        List[i].className = '';
+    }
+	
+	while(target.tagName != 'LI' || target.tagName == 'BODY'){
+        target = target.parentNode;
+    }
+
+    target.className = 'big';
+}
+function mouseoutHaddler(e){
+	var target=e.target||e.srcElement;
+	var oDiv=document.getElementById('se');
+   var List=oDiv.getElementsByTagName('li');
+   
+   for(var i = 0; i < List.length; i++){
+        List[i].className = '';
+    }
+	
+	while(target.tagName != 'LI' || target.tagName == 'BODY'){
+        target = target.parentNode;
+    }
+
+    target.className = '';
+}
+function initList(){
+   var oDiv=document.getElementById('se');
+   var List=oDiv.getElementsByTagName('li');
+   
+   for(var i=0;i<List.length;i++){
+		bind(List[i],'mouseover',mouseoverHaddler);
+		bind(List[i],'mouseout',mouseoutHaddler);
+   }
+}
+initList();
+</script>
+</body>
+</html>

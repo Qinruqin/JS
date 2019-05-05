@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>纯js联动下拉框</title>
+	<style>
+	select{width: 150px; height: 30px; line-height: 30px;}
+	</style>
+</head>
+<body>
+<div id="demo">
+	<select name="select1" id="" onChange="oS2(this.options.selectedIndex)">
+	
+	</select>
+	<select name="select2" id="">
+		<option >请选择网站</option>
+	</select>
+	<input type="button" value="go" onclick="go()">	
+</div>
+
+	<script>
+	var i,j,x = "";
+	/*  1、用json保存联动下拉框的数据jsonO：name是第一个下拉框option显示的text；
+	    sites.webname是第二个下拉框显示的文本；
+	    sites.url是第二个下拉框option的value
+	*/
+	var jsonO = [
+      {
+		"name":"百度",
+		"sites":[
+		{"webname":"百度百科","url":"https://www.baidu.com/"},
+		{"webname":"百度云","url":"https://cloud.baidu.com/index.html?track=cp:npinzhuan|pf:pc|pp:left|ci:|pu:495"},
+		{"webname":"百度统计","url":"https://tongji.baidu.com/web/welcome/products"}
+		]
+	  },
+	  {
+		"name":"新浪",
+		"sites":[
+		{"webname":"新浪微博","url":"http://www.sina.com.cn/"},
+		{"webname":"新浪运动","url":"http://sports.sina.com.cn/"},
+		{"webname":"新浪新闻","url":"http://news.sina.com.cn/"}
+		]
+	  },{
+		"name":"腾讯",
+		"sites":[
+		{"webname":"腾讯主页","url":"http://www.qq.com/"},
+		{"webname":"腾讯新闻","url":"http://news.qq.com/"},
+		{"webname":"腾讯时尚","url":"http://fashion.qq.com/"},
+		{"webname":"腾讯汽车","url":"http://auto.qq.com/"}
+		]
+	  }];
+
+    //2、获取2个下拉框
+	var oSelect = document.getElementsByTagName("select");
+	var s1=oSelect[0];
+	var s2 = oSelect[1];
+
+	//3、将第一个下拉框的文本显示出来
+	function oS1(){
+		for(i=0;i< jsonO.length;i++){
+			//new Option(text,value)有2个参数，text是显示的文本,value是值
+	       s1.options[i] = new Option(jsonO[i].name); 
+		}
+	}
+    //4、当第一个下拉框变化时，显示第二个下拉框的文本内容
+	function oS2(x){
+		//4.1 清空第二个下拉框显示的文本
+		for(var m = s2.options.length;m>0;m--){
+			s2.options[m] = null;
+		}
+		//4.2 将联动的数据显示到第二个下拉框
+		for( j = 0;j<3;j++){
+			s2.options[j] = new Option(jsonO[x].sites[j].webname,jsonO[x].sites[j].url) ;
+		}
+		//4.3 默认第一个option被选中
+		s2.options[0].selected=true;
+	}
+	//5、点击按钮后，跳转至相应的页面
+	function go(){
+		window.location = s2.options[s2.selectedIndex].value;
+	}
+	oS1();
+	</script>
+</body>
+</html>

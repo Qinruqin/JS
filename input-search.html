@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>模糊搜索查询</title>
+	<style>
+	*{ margin:0; padding:0; }
+	#wrap{ position:relative; 
+		width:200px; margin:40px auto; 
+		background:#f00; }
+	#input1{ position:absolute; top:0; 
+		width:200px; height:30px; padding:0 10px;
+	}
+	ul{
+		position:absolute;top:34px; display:none;
+	    width:224px;  
+	    list-style:none; 
+	    background:#eee;
+	}
+	ul li{height:30px; padding:0px 10px;
+		line-height:30px;  
+		cursor:pointer;
+	}
+	ul li:hover{color:#f00; 
+		background:#ccc;}
+	</style>
+</head>
+<body>
+	<div id="wrap">
+		<input type="text" id="input1">
+		<ul id="list">
+			<li>js</li>
+			<li>android</li>
+			<li>java</li>
+			<li>javaScript</li>
+			<li>PHP</li>
+		</ul>
+    </div>
+	<script>
+		var oInput = document.getElementById("input1");
+		var oUl = document.getElementById("list");
+		var aLi = oUl.getElementsByTagName("li");
+
+		oInput.onkeyup = function(){
+			var val = oInput.value.toUpperCase();
+			for(var i = 0;i<aLi.length;i++){
+				oUl.style.display = "block";
+				if(aLi[i].innerHTML.toUpperCase().indexOf(val) >-1){
+					aLi[i].style.display = "block";
+				}else{
+					aLi[i].style.display = "none";
+				}
+			}
+		}
+		oInput.onblur = function(){
+			oUl.style.display = "none";
+			oInput.value = "";
+		}
+	</script>
+	
+</body>
+</html>

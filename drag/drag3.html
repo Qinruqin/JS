@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>拖动删除飞机</title>
+	<style>
+	body{
+		text-align: center;
+	}
+	#trash{
+		opacity: 0.2;
+		margin:15px;
+	}
+	</style>
+</head>
+<body>
+	<h3>拖动飞机到垃圾桶后从DOM树中删除元素</h3>
+	<img src="img/trash_full.png"  alt="" id="trash">
+	<hr/>
+	<img src="img/p3.png" class="src" alt="" id="p3">
+	<img src="img/p4.png" class="src" alt="" id="p4">
+	<img src="img/p5.png" class="src" alt="" id="p5">
+	<script>
+	var srcList = document.querySelectorAll('.src');
+
+	for(var i = 0 ; i<srcList.length;i++){
+	 	var p = srcList[i];
+		p.ondragstart = function(e){//开始拖动源对象
+			e.dataTransfer.setData('PlaneID',this.id);//保存数据 ---img对应的Id
+		}
+		p.ondrag = function(){}
+		p.ondragend = function(){}
+	}	
+
+	//为目标对象添加事件监听--删除拖动的源对象
+	trash.ondragenter = function(){//源对象进入目标对象
+		console.log("Drag enter....");
+		this.style.opacity = "1";//将透明度设置为1
+	}
+	trash.ondragleave = function(){//源对象离开目标对象后
+		console.log("Drag leave....");
+		this.style.opacity = ".2";//将透明度设置为0.2
+	}
+	trash.ondragover = function(e){//源对象经过目标对象
+		e.preventDefault();
+	}
+	trash.ondrop = function(e){//源对象松手释放在了目标对象中
+		console.log("Drop");
+		this.style.opacity = ".2";//将透明度设置为0.2
+		var id = e.dataTransfer.getData('PlaneID');
+		var p  = document.getElementById(id);
+		p.parentNode.removeChild(p);
+	}
+
+
+	</script>
+</body>
+</html>
